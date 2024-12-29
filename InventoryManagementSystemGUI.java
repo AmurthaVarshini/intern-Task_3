@@ -14,7 +14,7 @@ public class InventoryManagementSystemGUI {
     private JTable table;
     private DefaultTableModel tableModel;
 
-    // Constructor for establishing database connection
+
     public InventoryManagementSystemGUI() {
         try {
             connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
@@ -25,14 +25,10 @@ public class InventoryManagementSystemGUI {
             System.exit(1);
         }
     }
-
-    // Main method
     public static void main(String[] args) {
         InventoryManagementSystemGUI app = new InventoryManagementSystemGUI();
         app.showLoginDialog();
     }
-
-    // Show Login Dialog
     public void showLoginDialog() {
         JTextField usernameField = new JTextField();
         JPasswordField passwordField = new JPasswordField();
@@ -59,8 +55,6 @@ public class InventoryManagementSystemGUI {
             System.exit(0); // Exit if login is canceled
         }
     }
-
-    // Authenticate User
     private boolean authenticateUser(String username, String password) {
         try {
             String query = "SELECT * FROM User WHERE username = ? AND password = ?";
@@ -76,53 +70,40 @@ public class InventoryManagementSystemGUI {
             return false;
         }
     }
-
-    // Create GUI
     public void createGUI() {
         JFrame frame = new JFrame("Inventory Management System");
         frame.setSize(800, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
-
-        // Table setup
         String[] columnNames = {"Product ID", "Name", "Quantity", "Price", "Category"};
         tableModel = new DefaultTableModel(columnNames, 0);
         table = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(table);
         frame.add(scrollPane, BorderLayout.CENTER);
 
-        // Buttons panel
         JPanel buttonPanel = new JPanel(new GridLayout(1, 4));
-
-        // Add Product Button
         JButton addButton = new JButton("Add Product");
         addButton.addActionListener(e -> addProduct());
         buttonPanel.add(addButton);
 
-        // Delete Product Button
         JButton deleteButton = new JButton("Delete Product");
         deleteButton.addActionListener(e -> deleteProduct());
         buttonPanel.add(deleteButton);
-
-        // Low Stock Alert Button
         JButton lowStockButton = new JButton("Low Stock");
         lowStockButton.addActionListener(e -> showLowStockProducts());
         buttonPanel.add(lowStockButton);
 
-        // Refresh Button
         JButton refreshButton = new JButton("Refresh");
         refreshButton.addActionListener(e -> updateDisplay());
         buttonPanel.add(refreshButton);
 
         frame.add(buttonPanel, BorderLayout.SOUTH);
 
-        // Initialize with product display
         updateDisplay();
 
         frame.setVisible(true);
     }
 
-    // Add Product
     private void addProduct() {
         JTextField idField = new JTextField();
         JTextField nameField = new JTextField();
@@ -166,7 +147,7 @@ public class InventoryManagementSystemGUI {
         }
     }
 
-    // Delete Product
+
     private void deleteProduct() {
         String productId = JOptionPane.showInputDialog(null, "Enter Product ID to delete:");
         if (productId != null && !productId.trim().isEmpty()) {
@@ -189,7 +170,6 @@ public class InventoryManagementSystemGUI {
         }
     }
 
-    // Show Low Stock Products
     private void showLowStockProducts() {
         String thresholdStr = JOptionPane.showInputDialog(null, "Enter low stock threshold:");
         try {
@@ -215,7 +195,6 @@ public class InventoryManagementSystemGUI {
         }
     }
 
-    // Update Display
     private void updateDisplay() {
         try {
             tableModel.setRowCount(0); // Clear existing rows
